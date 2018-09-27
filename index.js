@@ -1,6 +1,6 @@
 (() => {
-  const projectName = 'Keksobooking';
-  const authorName = 'Svyatoslav Nesteruk';
+  const PROJECT_NAME = 'Keksobooking';
+  const AUTHORS_NAME = 'Svyatoslav Nesteruk';
   let currentCommand = null;
   let currentAnswer = 'default';
   const SUCCESS_EXIT_CODE = 0;
@@ -13,7 +13,7 @@
 
   const msgList = {
     default: '',
-    empty: () => `Привет пользователь!\nЭта программа будет запускать сервер ${projectName}.\nАвтор: ${authorName}.`,
+    empty: () => `Привет пользователь!\nЭта программа будет запускать сервер ${PROJECT_NAME}.\nАвтор: ${AUTHORS_NAME}.`,
     unknown: (commandName) => (
       `Неизвестная команда "${commandName}"\nЧтобы прочитать правила использования приложения, наберите "--help"`
     ),
