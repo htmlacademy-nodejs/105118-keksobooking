@@ -17,8 +17,6 @@
     ),
   }
 
-  const SUCCESS_EXIT_CODE = 0;
-
   function run(code) {
     if (commandsList.hasOwnProperty(currentCommand)) {
       commandsList[currentCommand]();
