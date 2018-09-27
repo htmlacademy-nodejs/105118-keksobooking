@@ -2,6 +2,7 @@
   const projectName = 'Keksobooking';
   const authorName = 'Svyatoslav Nesteruk';
   let currentAnswer = 'default';
+
   const commandsList = {
     '--help': () => console.log('Доступные команды:\n--help — печатает этот текст; \n--version — печатает версию приложения;'),
     '--version': () => console.log('v0.0.1'),
@@ -53,7 +54,7 @@
   }
 
   process.on('exit', (code) => run(code));
+
   const currentCommand = getCommand();
   analizeCommand(currentCommand);
-  console.log(currentAnswer);
 })();
