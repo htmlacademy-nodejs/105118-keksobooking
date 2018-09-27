@@ -19,7 +19,7 @@
     ),
   }
 
-  function run(code) {
+  function runCommand(code) {
     if (commandsList.hasOwnProperty(currentCommand)) {
       commandsList[currentCommand]();
     } else {
@@ -32,7 +32,7 @@
     return result.length ? result[0] : null;
   }
 
-  function analizeCommand(commandName = null) {
+  function checkCommand(commandName = null) {
     if (!commandName) {
       currentAnswer = 'empty';
       process.exit(SUCCESS_EXIT_CODE);
@@ -43,8 +43,11 @@
     }
   }
 
-  process.on('exit', (code) => run(code));
+  process.on(
+    'exit',
+    (code) => runCommand(code),
+  );
 
   currentCommand = getCommand();
-  analizeCommand(currentCommand);
+  checkCommand(currentCommand);
 })();
