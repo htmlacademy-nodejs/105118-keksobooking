@@ -1,6 +1,7 @@
 (() => {
   const projectName = 'Keksobooking';
   const authorName = 'Svyatoslav Nesteruk';
+  let currentCommand = null;
   let currentAnswer = 'default';
 
   const commandsList = {
@@ -36,21 +37,14 @@
       currentAnswer = 'empty';
       process.exit(0);
     }
-    if (isCommandIncludes(commandName)) {
-      currentAnswer = commandName;
-      process.exit(0);
-    } else {
+    if (!commandsList.hasOwnProperty(commandName)) {
       currentAnswer = 'unknown';
       process.exit(1);
     }
   }
 
-  function isCommandIncludes() {
-
-  }
-
   process.on('exit', (code) => run(code));
 
-  const currentCommand = getCommand();
+  currentCommand = getCommand();
   analizeCommand(currentCommand);
 })();
