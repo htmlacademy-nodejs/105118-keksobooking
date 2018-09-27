@@ -1,39 +1,59 @@
 (() => {
-  const commands = {
-    '--help': 'Доступные команды:\n--help — печатает этот текст; \n--version — печатает версию приложения;',
-    '--version': 'v0.0.1',
+  const projectName = 'Keksobooking';
+  const authorName = 'Svyatoslav Nesteruk';
+  let currentAnswer = 'default';
+  const commandsList = {
+    '--help': () => console.log('Доступные команды:\n--help — печатает этот текст; \n--version — печатает версию приложения;'),
+    '--version': () => console.log('v0.0.1'),
   };
 
-  const errors = {
-    withoutNoCommand: (
-      projectName,
-      authorName,
-    ) => `Привет пользователь!\nЭта программа будет запускать сервер ${projectName}.\nАвтор: ${authorName}.`,
-    incorrectCommand: (commandName) => (
-      `Неизвестная команда ${commandName}\nЧтобы прочитать правила использования приложения, наберите "--help"`
+  const msgList = {
+    default: '',
+    empty: () => `Привет пользователь!\nЭта программа будет запускать сервер ${projectName}.\nАвтор: ${authorName}.`,
+    unknown: (commandName) => (
+      `Неизвестная команда "${commandName}"\nЧтобы прочитать правила использования приложения, наберите "--help"`
     ),
   }
 
-  function renderer(msg, error) {
-    if (error) {
-      console.err(msg);
+  const SUCCESS_EXIT_CODE = 0;
+
+  function run(code) {
+    if (commandsList.hasOwnProperty(currentCommand)) {
+      commandsList[currentCommand]();
     } else {
-      console.log(msg);
+      console.error(msgList[currentAnswer](currentCommand));
     }
   }
 
-  function getCommands() {
-    return [...process.argv].splice(2);
+  function getCommand() {
+    const result = [...process.argv].splice(2);
+    return result.length ? result[0] : null;
   }
 
-  function msgFromCommand(commandName) {
+  function analizeCommand(commandName = null) {
     if (!commandName) {
-      return errors.withoutNoCommand('Keksobooking', 'Svyatoslav Nesteruk');
+      currentAnswer = 'empty';
+      process.exit(0);
     }
-    return commands.hasOwnProperty(commandName)
-    ? commands[commandName]
-    : errors.incorrectCommand(commandName);
+    if (isCommandIncludes(commandName)) {
+      currentAnswer = commandName;
+      process.exit(0);
+    } else {
+      currentAnswer = 'unknown';
+      process.exit(1);
+    }
   }
 
-  console.error(msgFromCommand(getCommands()[0]));
+  function isCommandIncludes() {
+
+  }
+
+  function msgFromCode(code) {
+    return codesList.hasOwnProperty(code) ? codesList[code] : '';
+  }
+
+  process.on('exit', (code) => run(code));
+  const currentCommand = getCommand();
+  analizeCommand(currentCommand);
+  console.log(currentAnswer);
 })();
