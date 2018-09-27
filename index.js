@@ -49,10 +49,6 @@
 
   }
 
-  function msgFromCode(code) {
-    return codesList.hasOwnProperty(code) ? codesList[code] : '';
-  }
-
   process.on('exit', (code) => run(code));
 
   const currentCommand = getCommand();
