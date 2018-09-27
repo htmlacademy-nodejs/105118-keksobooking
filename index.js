@@ -3,6 +3,8 @@
   const authorName = 'Svyatoslav Nesteruk';
   let currentCommand = null;
   let currentAnswer = 'default';
+  const SUCCESS_EXIT_CODE = 0;
+  const FAILURE_EXIT_CODE = 1;
 
   const commandsList = {
     '--help': () => console.log('Доступные команды:\n--help — печатает этот текст; \n--version — печатает версию приложения;'),
@@ -33,11 +35,11 @@
   function analizeCommand(commandName = null) {
     if (!commandName) {
       currentAnswer = 'empty';
-      process.exit(0);
+      process.exit(SUCCESS_EXIT_CODE);
     }
     if (!commandsList.hasOwnProperty(commandName)) {
       currentAnswer = 'unknown';
-      process.exit(1);
+      process.exit(FAILURE_EXIT_CODE);
     }
   }
 
