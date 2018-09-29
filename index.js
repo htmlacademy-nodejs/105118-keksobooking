@@ -3,6 +3,7 @@ const PROJECT_NAME = `Keksobooking`;
 const AUTHORS_NAME = `Svyatoslav Nesteruk`;
 const SUCCESS_EXIT_CODE = 0;
 const FAILURE_EXIT_CODE = 1;
+const { version } = require(`./package`);
 
 function checkCommand(command) {
   switch (command) {
@@ -15,7 +16,7 @@ function checkCommand(command) {
       process.exit(SUCCESS_EXIT_CODE);
       break;
     case `--version`:
-      console.log(`v0.0.1`);
+      console.log(`v${version}`);
       process.exit(SUCCESS_EXIT_CODE);
       break;
     default:
