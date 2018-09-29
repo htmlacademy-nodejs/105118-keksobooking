@@ -1,3 +1,4 @@
+'use strict';
 const PROJECT_NAME = `Keksobooking`;
 const AUTHORS_NAME = `Svyatoslav Nesteruk`;
 const SUCCESS_EXIT_CODE = 0;
@@ -14,7 +15,7 @@ function checkCommand(command) {
       process.exit(SUCCESS_EXIT_CODE);
       break;
     case `--version`:
-      console.log('v0.0.1');
+      console.log(`v0.0.1`);
       process.exit(SUCCESS_EXIT_CODE);
       break;
     default:
