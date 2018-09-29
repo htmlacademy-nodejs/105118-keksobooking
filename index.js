@@ -3,7 +3,7 @@ const PROJECT_NAME = `Keksobooking`;
 const AUTHORS_NAME = `Svyatoslav Nesteruk`;
 const SUCCESS_EXIT_CODE = 0;
 const FAILURE_EXIT_CODE = 1;
-const { version } = require(`./package`);
+const {version} = require(`./package`);
 
 function checkCommand(command) {
   switch (command) {
