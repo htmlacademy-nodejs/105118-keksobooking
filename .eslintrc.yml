@@ -1,0 +1,6 @@
+env:
+  node: true
+  es6: true
+extends: 'htmlacademy/node'
+parserOptions:
+  ecmaVersion: 2017
