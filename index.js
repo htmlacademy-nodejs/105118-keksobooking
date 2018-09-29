@@ -1,28 +1,45 @@
 'use strict';
-const PROJECT_NAME = `Keksobooking`;
-const AUTHORS_NAME = `Svyatoslav Nesteruk`;
+
+const modules = require(`./src/index`).modules;
+const handleHelp = require(`./src/help`).execute;
+const {
+  name,
+  author,
+} = require(`./package`);
+
+const COMMAND_NAME = process.argv[2];
+
 const SUCCESS_EXIT_CODE = 0;
 const FAILURE_EXIT_CODE = 1;
-const {version} = require(`./package`);
 
-function checkCommand(command) {
-  switch (command) {
-    case undefined:
-      console.error(`Привет пользователь!\nЭта программа будет запускать сервер ${PROJECT_NAME}.\nАвтор: ${AUTHORS_NAME}.`);
-      process.exit(FAILURE_EXIT_CODE);
-      break;
-    case `--help`:
-      console.log(`Доступные команды:\n--help — печатает этот текст; \n--version — печатает версию приложения;`);
-      process.exit(SUCCESS_EXIT_CODE);
-      break;
-    case `--version`:
-      console.log(`v${version}`);
-      process.exit(SUCCESS_EXIT_CODE);
-      break;
-    default:
-      console.log(`Неизвестная команда "${command}"\nЧтобы прочитать правила использования приложения, наберите "--help"`);
-      process.exit(SUCCESS_EXIT_CODE);
+const handleSuccess = ({execute}) => {
+  execute();
+  process.exit(SUCCESS_EXIT_CODE);
+};
+
+const handleFailure = (command) => {
+  if (command === undefined) {
+    console.error(`Привет пользователь!\nЭта программа будет запускать сервер ${name}.\nАвтор: ${author}.`);
+    process.exit(SUCCESS_EXIT_CODE);
+  } else {
+    console.error(`Неизвестная команда "${command}"`);
+    handleHelp(command);
+    process.exit(FAILURE_EXIT_CODE);
   }
-}
+};
 
-checkCommand(process.argv[2]);
+const findModule = () =>
+  modules.find((module) =>
+    `--${module.name}` === COMMAND_NAME,
+  );
+
+const run = () => {
+  const result = findModule();
+  if (result === undefined) {
+    handleFailure(COMMAND_NAME);
+  } else {
+    handleSuccess(result);
+  }
+};
+
+run();
