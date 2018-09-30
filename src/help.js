@@ -1,12 +1,6 @@
 'use strict';
 
-const modules = [
-  require(`./license`),
-  require(`./version`),
-  require(`./description`),
-  require(`./author`),
-];
-
+const colors = require(`colors`);
 const NAME = `help`;
 const DESCRIPTION = `Shows list of commands`;
 const INITIAL_ACCAMULATOR = `Доступные команды:\n--${NAME} - ${DESCRIPTION}`;
@@ -14,7 +8,7 @@ const INITIAL_ACCAMULATOR = `Доступные команды:\n--${NAME} - ${D
 module.exports = {
   name: NAME,
   description: DESCRIPTION,
-  execute() {
+  execute(modules) {
     const reducer = (
         accumulator,
         {
