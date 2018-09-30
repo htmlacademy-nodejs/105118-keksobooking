@@ -1,5 +1,6 @@
 'use strict';
 
+const colors = require(`colors`);
 const modules = [
   require(`./license`),
   require(`./version`),
@@ -9,7 +10,7 @@ const modules = [
 
 const NAME = `help`;
 const DESCRIPTION = `Shows list of commands`;
-const INITIAL_ACCAMULATOR = `Доступные команды:\n--${NAME} - ${DESCRIPTION}`;
+const INITIAL_ACCAMULATOR = `Доступные команды:\n--${colors.grey(NAME)} - ${colors.green(DESCRIPTION)}`;
 
 module.exports = {
   name: NAME,
@@ -21,7 +22,7 @@ module.exports = {
           name,
           description,
         },
-    ) => ``.concat(accumulator, `\n--${name}`, ` - ${description}`);
+    ) => ``.concat(accumulator, `\n--${colors.grey(name)}`, ` - ${colors.green(description)}`);
     const helpText = modules.reduce(reducer, INITIAL_ACCAMULATOR);
     console.log(helpText);
   },
