@@ -1,6 +1,11 @@
 'use strict';
 
-const modules = require(`./`).modules;
+const modules = [
+  require(`./license`),
+  require(`./version`),
+  require(`./description`),
+  require(`./author`),
+];
 
 const NAME = `help`;
 const DESCRIPTION = `Shows list of commands`;

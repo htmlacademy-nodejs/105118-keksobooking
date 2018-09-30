@@ -1,13 +1,21 @@
 'use strict';
 
-const modules = require(`./src/index`).modules;
-const handleHelp = require(`./src/help`).execute;
+const modules = [
+  require(`./src/help`),
+  require(`./src/license`),
+  require(`./src/version`),
+  require(`./src/description`),
+  require(`./src/author`),
+];
+
 const {
   name,
   author,
 } = require(`./package`);
 
 const COMMAND_NAME = process.argv[2];
+
+const handleHelp = modules[0];
 
 const SUCCESS_EXIT_CODE = 0;
 const FAILURE_EXIT_CODE = 1;
@@ -23,7 +31,7 @@ const handleFailure = (command) => {
     process.exit(SUCCESS_EXIT_CODE);
   } else {
     console.error(`Неизвестная команда "${command}"`);
-    handleHelp(command);
+    handleHelp.execute(command);
     process.exit(FAILURE_EXIT_CODE);
   }
 };
