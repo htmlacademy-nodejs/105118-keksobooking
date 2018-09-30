@@ -1,6 +1,5 @@
 'use strict';
 
-const colors = require(`colors`);
 const NAME = `help`;
 const DESCRIPTION = `Shows list of commands`;
 const INITIAL_ACCAMULATOR = `Доступные команды:\n--${NAME} - ${DESCRIPTION}`;
