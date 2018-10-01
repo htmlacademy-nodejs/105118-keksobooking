@@ -1,28 +1,59 @@
 'use strict';
-const PROJECT_NAME = `Keksobooking`;
-const AUTHORS_NAME = `Svyatoslav Nesteruk`;
+
+const modules = [
+  require(`./src/help`),
+  require(`./src/license`),
+  require(`./src/version`),
+  require(`./src/description`),
+  require(`./src/author`),
+];
+
+const {
+  name,
+  author,
+} = require(`./package`);
+
+const commandName = process.argv[2];
+
+const handleHelp = require(`./src/help`);
+
 const SUCCESS_EXIT_CODE = 0;
 const FAILURE_EXIT_CODE = 1;
-const {version} = require(`./package`);
 
-function checkCommand(command) {
-  switch (command) {
-    case undefined:
-      console.error(`Привет пользователь!\nЭта программа будет запускать сервер ${PROJECT_NAME}.\nАвтор: ${AUTHORS_NAME}.`);
-      process.exit(FAILURE_EXIT_CODE);
-      break;
-    case `--help`:
-      console.log(`Доступные команды:\n--help — печатает этот текст; \n--version — печатает версию приложения;`);
-      process.exit(SUCCESS_EXIT_CODE);
-      break;
-    case `--version`:
-      console.log(`v${version}`);
-      process.exit(SUCCESS_EXIT_CODE);
+const handleSuccess = (module) => {
+  switch (module.name) {
+    case `help`:
+      module.execute(modules);
       break;
     default:
-      console.log(`Неизвестная команда "${command}"\nЧтобы прочитать правила использования приложения, наберите "--help"`);
-      process.exit(SUCCESS_EXIT_CODE);
+      module.execute();
   }
-}
+  process.exit(SUCCESS_EXIT_CODE);
+};
 
-checkCommand(process.argv[2]);
+const handleFailure = (command) => {
+  if (command === undefined) {
+    console.log(`Привет пользователь!\nЭта программа будет запускать сервер ${name}.\nАвтор: ${author}.`);
+    process.exit(SUCCESS_EXIT_CODE);
+  } else {
+    console.error(`Неизвестная команда "${command}"`);
+    handleHelp.execute(modules);
+    process.exit(FAILURE_EXIT_CODE);
+  }
+};
+
+const findModule = () =>
+  modules.find((module) =>
+    `--${module.name}` === commandName,
+  );
+
+const run = () => {
+  const result = findModule();
+  if (result === undefined) {
+    handleFailure(commandName);
+  } else {
+    handleSuccess(result);
+  }
+};
+
+run();
