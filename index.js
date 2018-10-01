@@ -19,12 +19,11 @@ const handleHelp = modules[0];
 
 const SUCCESS_EXIT_CODE = 0;
 const FAILURE_EXIT_CODE = 1;
-const NUMBER_OF_HELP_COMMAND = 1;
 
 const handleSuccess = (module) => {
   switch (module.name) {
     case `help`:
-      module.execute(modules.splice(NUMBER_OF_HELP_COMMAND));
+      module.execute(modules);
       break;
     default:
       module.execute();
@@ -38,7 +37,7 @@ const handleFailure = (command) => {
     process.exit(SUCCESS_EXIT_CODE);
   } else {
     console.error(`Неизвестная команда "${command}"`);
-    handleHelp.execute(modules.splice(NUMBER_OF_HELP_COMMAND));
+    handleHelp.execute(modules);
     process.exit(FAILURE_EXIT_CODE);
   }
 };

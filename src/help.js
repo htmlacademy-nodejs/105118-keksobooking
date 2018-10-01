@@ -1,22 +1,12 @@
 'use strict';
 
 const colors = require(`colors`);
-const NAME = `help`;
-const DESCRIPTION = `Shows list of commands`;
-const INITIAL_ACCAMULATOR = `Доступные команды:\n--${colors.grey(NAME)} - ${colors.green(DESCRIPTION)}`;
 
 module.exports = {
-  name: NAME,
-  description: DESCRIPTION,
+  name: `help`,
+  description: `Shows list of commands`,
   execute(modules) {
-    const reducer = (
-        accumulator,
-        {
-          name,
-          description,
-        },
-    ) => ``.concat(accumulator, `\n--${colors.grey(name)}`, ` - ${colors.green(description)}`);
-    const helpText = modules.reduce(reducer, INITIAL_ACCAMULATOR);
-    console.log(helpText);
+    console.log(`Доступные команды:\n${modules.map(({name, description}) =>
+      `--${colors.grey(name)} - ${colors.green(description)}`).join(`\n`)}`);
   },
 };
