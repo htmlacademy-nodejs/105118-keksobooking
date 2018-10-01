@@ -23,7 +23,7 @@ const FAILURE_EXIT_CODE = 1;
 const handleSuccess = (module) => {
   switch (module.name) {
     case `help`:
-      module.execute(modules.splice(NUMBER_OF_HELP_COMMAND));
+      module.execute(modules);
       break;
     default:
       module.execute();
