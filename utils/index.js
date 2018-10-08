@@ -1,18 +1,19 @@
 'use strict';
 
-class utils {
-  static randomRange(
+const utils = (() => ({
+  randomRange: (
       from,
       to,
-  ) {
-    return Math.floor(Math.random() * (to - from)) + from;
-  }
-  static getUniqArray(value) {
-    return Array.from(new Set(value));
-  }
-  static isRandomEven() {
-    return Math.floor(Math.random() * 10) % 2 === 0;
-  }
-}
+  ) => Math.floor(Math.random() * (to - from)) + from,
+
+  getUniqArray: (value) =>
+    Array.from(new Set(value)),
+
+  isRandomEven: () =>
+    Math.floor(Math.random() * 10) % 2 === 0,
+
+  randomChoice: (arr) =>
+    arr[utils.randomRange(0, arr.length)],
+}))();
 
 module.exports = utils;

@@ -4,25 +4,24 @@ const assert = require(`assert`);
 
 const {
   generateEntity,
-  TITLE,
+  titles,
   MIN_PRICE,
   MAX_PRICE,
-  TYPE,
+  types,
   MIN_NUMBER_OF_ROOMS,
   MAX_NUMBER_OF_ROOMS,
   MIN_NUMBER_OF_GUESTS,
   MAX_NUMBER_OF_GUESTS,
-  CHECKIN,
-  CHECKOUT,
-  FEATURES,
-  PHOTOS,
+  checkins,
+  checkouts,
+  features,
+  photos,
   MIN_X_LOCATION,
   MAX_X_LOCATION,
   MIN_Y_LOCATION,
   MAX_Y_LOCATION,
   WEEK_MS,
-} = require(`../src/generateEntity.js`).generateEntity;
-
+} = require(`../src/generateEntity.js`);
 
 describe(`Check that generateEntity generate data properly`, () => {
   it(`should return avatar: string`, () => {
@@ -37,7 +36,7 @@ describe(`Check that generateEntity generate data properly`, () => {
   });
   it(`should return one of titles`, () => {
     assert(
-        TITLE
+        titles
         .includes(
             generateEntity.genOfferTitle()
         ),
@@ -64,7 +63,7 @@ describe(`Check that generateEntity generate data properly`, () => {
   it(`should return one of type values`, () => {
     const currentType = generateEntity.genOfferType();
     assert(
-        TYPE
+        types
         .includes(
             currentType,
         ),
@@ -90,7 +89,7 @@ describe(`Check that generateEntity generate data properly`, () => {
   it(`should return one of checkin(12:00, 13:00, 14:00)`, () => {
     const currentCheckin = generateEntity.genOfferCheckin();
     assert(
-        CHECKIN
+        checkins
         .includes(
             currentCheckin,
         ),
@@ -100,7 +99,7 @@ describe(`Check that generateEntity generate data properly`, () => {
   it(`should return one of checkout(12:00, 13:00, 14:00)`, () => {
     const currentCheckout = generateEntity.genOfferCheckout();
     assert(
-        CHECKOUT
+        checkouts
         .includes(
             currentCheckout,
         ),
@@ -110,7 +109,7 @@ describe(`Check that generateEntity generate data properly`, () => {
   it(`should return features array of unic strings`, () => {
     const currentFeatures = generateEntity.getOfferFeatures();
     assert(
-        currentFeatures.every((value) => FEATURES.includes(value))
+        currentFeatures.every((value) => features.includes(value))
         && Array.from(new Set(currentFeatures)).length === currentFeatures.length,
         `wrong feature - invlid strings or non uniq value`,
     );
@@ -124,7 +123,7 @@ describe(`Check that generateEntity generate data properly`, () => {
   it(`shoud return array of strings in random order`, () => {
     const currentPhotos = generateEntity.getOfferPhotos();
     assert(
-        currentPhotos.every((value) => PHOTOS.includes(value)),
+        currentPhotos.every((value) => photos.includes(value)),
         `wrong array`,
     );
   });
