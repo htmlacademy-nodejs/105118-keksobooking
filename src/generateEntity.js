@@ -2,7 +2,7 @@
 
 const utils = require(`../utils`);
 
-const titles = [
+const titlesList = [
   `Большая уютная квартира`,
   `Маленькая неуютная квартира`,
   `Огромный прекрасный дворец`,
@@ -13,26 +13,26 @@ const titles = [
   `Неуютное бунгало по колено в воде`,
 ];
 
-const types = [
+const typesList = [
   `flat`,
   `palace`,
   `house`,
   `bungalo`,
 ];
 
-const checkins = [
+const checkinsList = [
   `12:00`,
   `13:00`,
   `14:00`,
 ];
 
-const checkouts = [
+const checkoutsList = [
   `12:00`,
   `13:00`,
   `14:00`,
 ];
 
-const features = [
+const featuresList = [
   `wifi`,
   `dishwasher`,
   `parking`,
@@ -41,7 +41,7 @@ const features = [
   `conditioner`,
 ];
 
-const photos = [
+const photosList = [
   `http://o0.github.io/assets/images/tokyo/hotel1.jpg`,
   `http://o0.github.io/assets/images/tokyo/hotel2.jpg`,
   `http://o0.github.io/assets/images/tokyo/hotel3.jpg`,
@@ -67,75 +67,66 @@ const MAX_NUMBER_OF_GUESTS = 12;
 const WEEK_MS = 36288000000;
 const DATE_FROM = 0;
 
-const generateEntity = (() => ({
-  genAuthorAvatar: () =>
-    `https://robohash.org/${Date.now()}.png`,
+const generateEntity = () => ({
+  avatar: `https://robohash.org/${Date.now()}.png`,
 
-  genOfferTitle: () =>
-    utils.randomChoice(titles),
+  offer: {
+    title: utils.randomChoice(titlesList),
 
-  genOfferAddress: () =>
-    `{{${utils.randomRange(
-        OFFER_COORDINATE_FROM,
-        OFFER_COORDINATE_TO,
-    )}}}, {{${utils.randomRange(
-        OFFER_COORDINATE_FROM,
-        OFFER_COORDINATE_TO,
-    )}}}`,
+    address:
+      `{{${utils.randomRange(
+          OFFER_COORDINATE_FROM,
+          OFFER_COORDINATE_TO,
+      )}}}, {{${utils.randomRange(
+          OFFER_COORDINATE_FROM,
+          OFFER_COORDINATE_TO,
+      )}}}`,
 
-  genOfferPrice: () =>
-    utils.randomRange(MIN_PRICE, MAX_PRICE),
+    price: utils.randomRange(MIN_PRICE, MAX_PRICE),
 
-  genOfferType: () =>
-    utils.randomChoice(types),
+    type: utils.randomChoice(typesList),
 
-  genOfferRoomsNumber: () =>
-    utils.randomRange(MIN_NUMBER_OF_ROOMS, MAX_NUMBER_OF_ROOMS),
+    rooms: utils.randomRange(MIN_NUMBER_OF_ROOMS, MAX_NUMBER_OF_ROOMS),
 
-  genOfferNuberOfGuests: () =>
-    utils.randomRange(MIN_NUMBER_OF_GUESTS, MAX_NUMBER_OF_GUESTS),
+    guests: utils.randomRange(MIN_NUMBER_OF_GUESTS, MAX_NUMBER_OF_GUESTS),
 
-  genOfferCheckin: () =>
-    utils.randomChoice(checkins),
+    checkin: utils.randomChoice(checkinsList),
 
-  genOfferCheckout: () =>
-    utils.randomChoice(checkouts),
+    checkout: utils.randomChoice(checkoutsList),
 
-  getOfferFeatures: () =>
-    utils.getUniqArray(
-        features.filter(
-            utils.isRandomEven
-        )
-    ),
+    features:
+      utils.getUniqArray(
+          featuresList.filter(
+              utils.isRandomEven
+          )
+      ),
 
-  getOfferDescription: () => ``,
+    description: ``,
 
-  getOfferPhotos: () =>
-    photos.concat().sort(utils.isRandomEven),
-
-  getLoction: () => ({
+    photos: photosList.concat().sort(utils.isRandomEven),
+  },
+  location: {
     x: utils.randomRange(MIN_X_LOCATION, MAX_X_LOCATION),
     y: utils.randomRange(MIN_Y_LOCATION, MAX_Y_LOCATION),
-  }),
+  },
 
-  getDate: () =>
-    Date.now() - utils.randomRange(DATE_FROM, WEEK_MS),
-}))();
+  date: Date.now() - utils.randomRange(DATE_FROM, WEEK_MS),
+});
 
 module.exports = {
   generateEntity,
-  titles,
+  titlesList,
   MIN_PRICE,
   MAX_PRICE,
-  types,
+  typesList,
   MIN_NUMBER_OF_ROOMS,
   MAX_NUMBER_OF_ROOMS,
   MIN_NUMBER_OF_GUESTS,
   MAX_NUMBER_OF_GUESTS,
-  checkins,
-  checkouts,
-  features,
-  photos,
+  checkinsList,
+  checkoutsList,
+  featuresList,
+  photosList,
   MIN_X_LOCATION,
   MAX_X_LOCATION,
   MIN_Y_LOCATION,

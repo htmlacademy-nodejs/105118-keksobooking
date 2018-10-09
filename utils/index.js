@@ -1,6 +1,6 @@
 'use strict';
 
-const utils = (() => ({
+const utils = {
   randomRange: (
       from,
       to,
@@ -14,6 +14,6 @@ const utils = (() => ({
 
   randomChoice: (arr) =>
     arr[utils.randomRange(0, arr.length)],
-}))();
+};
 
 module.exports = utils;

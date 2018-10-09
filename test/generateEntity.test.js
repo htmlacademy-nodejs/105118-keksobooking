@@ -4,18 +4,18 @@ const assert = require(`assert`);
 
 const {
   generateEntity,
-  titles,
+  titlesList,
   MIN_PRICE,
   MAX_PRICE,
-  types,
+  typesList,
   MIN_NUMBER_OF_ROOMS,
   MAX_NUMBER_OF_ROOMS,
   MIN_NUMBER_OF_GUESTS,
   MAX_NUMBER_OF_GUESTS,
-  checkins,
-  checkouts,
-  features,
-  photos,
+  checkinsList,
+  checkoutsList,
+  featuresList,
+  photosList,
   MIN_X_LOCATION,
   MAX_X_LOCATION,
   MIN_Y_LOCATION,
@@ -24,111 +24,115 @@ const {
 } = require(`../src/generateEntity.js`);
 
 describe(`Check that generateEntity generate data properly`, () => {
+  const entity = generateEntity();
+  const {
+    title,
+    address,
+    price,
+    type,
+    rooms,
+    guests,
+    checkin,
+    checkout,
+    features,
+    description,
+    photos,
+  } = entity.offer;
   it(`should return avatar: string`, () => {
     assert(
-        generateEntity
-        .genAuthorAvatar()
-        .match(
-            /https:\/\/robohash.org\/([a-z,A-Z,0-9]{1,100})\.png/
-        ),
+        entity.avatar
+          .match(
+              /https:\/\/robohash.org\/([a-z,A-Z,0-9]{1,100})\.png/
+          ),
         `String not match`,
     );
   });
   it(`should return one of titles`, () => {
     assert(
-        titles
+        titlesList
         .includes(
-            generateEntity.genOfferTitle()
+            title
         ),
         `wrong title`,
     );
   });
   it(`should return address {{location.x}}, {{location.y}}`, () => {
-    const currentAddress = generateEntity.genOfferAddress();
     assert(
-        currentAddress.match(
+        address.match(
             /^\{\{[0-9]{0,3}[.]{0,1}([0-9]{0,5})\}\},\s\{\{[0-9]{0,3}[.]{0,1}([0-9]{0,5})\}\}$/
         ),
         `String not match`,
     );
   });
   it(`should return price(number > 1 000 and < 1 000 000 `, () => {
-    const currentPrice = generateEntity.genOfferPrice();
     assert(
-        currentPrice >= MIN_PRICE
-        && currentPrice <= MAX_PRICE,
-        `${currentPrice} - wrong price`,
+        price >= MIN_PRICE
+        && price <= MAX_PRICE,
+        `${price} - wrong price`,
     );
   });
   it(`should return one of type values`, () => {
-    const currentType = generateEntity.genOfferType();
     assert(
-        types
+        typesList
         .includes(
-            currentType,
+            type,
         ),
-        `${currentType} - wrong type`,
+        `${type} - wrong type`,
     );
   });
   it(`should return rooms number(5 > number > 0)`, () => {
-    const currentRoomsNumber = generateEntity.genOfferRoomsNumber();
     assert(
-        currentRoomsNumber >= MIN_NUMBER_OF_ROOMS
-        && currentRoomsNumber <= MAX_NUMBER_OF_ROOMS,
-        `${currentRoomsNumber} - wrong rooms number`,
+        rooms >= MIN_NUMBER_OF_ROOMS
+        && rooms <= MAX_NUMBER_OF_ROOMS,
+        `${rooms} - wrong rooms number`,
     );
   });
   it(`should return guests number`, () => {
-    const currentGuestsNumber = generateEntity.genOfferNuberOfGuests();
     assert(
-        currentGuestsNumber >= MIN_NUMBER_OF_GUESTS
-        && currentGuestsNumber <= MAX_NUMBER_OF_GUESTS,
-        `${currentGuestsNumber} - wrong guests number`,
+        guests >= MIN_NUMBER_OF_GUESTS
+        && guests <= MAX_NUMBER_OF_GUESTS,
+        `${guests} - wrong guests number`,
     );
   });
   it(`should return one of checkin(12:00, 13:00, 14:00)`, () => {
-    const currentCheckin = generateEntity.genOfferCheckin();
     assert(
-        checkins
+        checkinsList
         .includes(
-            currentCheckin,
+            checkin,
         ),
         `wrong checkin`,
     );
   });
   it(`should return one of checkout(12:00, 13:00, 14:00)`, () => {
-    const currentCheckout = generateEntity.genOfferCheckout();
     assert(
-        checkouts
+        checkoutsList
         .includes(
-            currentCheckout,
+            checkout,
         ),
         `wrong checkout`,
     );
   });
   it(`should return features array of unic strings`, () => {
-    const currentFeatures = generateEntity.getOfferFeatures();
     assert(
-        currentFeatures.every((value) => features.includes(value))
-        && Array.from(new Set(currentFeatures)).length === currentFeatures.length,
+        features.every((value) => featuresList.includes(value))
+        && Array.from(new Set(features)).length === features.length,
         `wrong feature - invlid strings or non uniq value`,
     );
   });
   it(`should return empty strings`, () => {
     assert(
-        generateEntity.getOfferDescription().length === 0,
+        description.length === 0,
         `string is not empty`,
     );
   });
   it(`shoud return array of strings in random order`, () => {
-    const currentPhotos = generateEntity.getOfferPhotos();
     assert(
-        currentPhotos.every((value) => photos.includes(value)),
+        photos.every((value) => photosList.includes(value)),
         `wrong array`,
     );
   });
   it(`shoud return object: {x: 300-900, y:150-500}`, () => {
-    const currentLocation = generateEntity.getLoction();
+    const currentLocation = entity.location;
     assert(
         currentLocation.x >= MIN_X_LOCATION
         && currentLocation.x <= MAX_X_LOCATION
@@ -138,11 +142,10 @@ describe(`Check that generateEntity generate data properly`, () => {
     );
   });
   it(`shoud return timestamp`, () => {
-    const currentDate = generateEntity.getDate();
     const now = Date.now();
     assert(
-        currentDate >= now - WEEK_MS
-        && currentDate <= now,
+        entity.date >= now - WEEK_MS
+        && entity.date <= now,
         `wrong date`,
     );
   });
