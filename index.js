@@ -7,11 +7,7 @@ const modules = [
   require(`./src/description`),
   require(`./src/author`),
 ];
-
-const {
-  name,
-  author,
-} = require(`./package`);
+const init = require(`./src/init`);
 
 const commandName = process.argv[2];
 
@@ -32,14 +28,9 @@ const handleSuccess = (module) => {
 };
 
 const handleFailure = (command) => {
-  if (command === undefined) {
-    console.log(`Привет пользователь!\nЭта программа будет запускать сервер ${name}.\nАвтор: ${author}.`);
-    process.exit(SUCCESS_EXIT_CODE);
-  } else {
-    console.error(`Неизвестная команда "${command}"`);
-    handleHelp.execute(modules);
-    process.exit(FAILURE_EXIT_CODE);
-  }
+  console.error(`Unknown command "${command}"`);
+  handleHelp.execute(modules);
+  process.exit(FAILURE_EXIT_CODE);
 };
 
 const findModule = () =>
@@ -47,8 +38,11 @@ const findModule = () =>
     `--${module.name}` === commandName,
   );
 
-const run = () => {
+const run = async () => {
   const result = findModule();
+  if (!commandName) {
+    await init();
+  }
   if (result === undefined) {
     handleFailure(commandName);
   } else {
