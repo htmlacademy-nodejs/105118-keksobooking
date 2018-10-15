@@ -1,17 +1,17 @@
 'use strict';
 
 const modules = [
-  require(`./src/help`),
-  require(`./src/license`),
-  require(`./src/version`),
-  require(`./src/description`),
-  require(`./src/author`),
+  require(`./src/commands/help`),
+  require(`./src/commands/license`),
+  require(`./src/commands/version`),
+  require(`./src/commands/description`),
+  require(`./src/commands/author`),
 ];
 const init = require(`./src/init`);
 
 const commandName = process.argv[2];
 
-const handleHelp = require(`./src/help`);
+const handleHelp = require(`./src/commands/help`);
 
 const SUCCESS_EXIT_CODE = 0;
 const FAILURE_EXIT_CODE = 1;
