@@ -42,6 +42,7 @@ const run = async () => {
   const result = findModule();
   if (!commandName) {
     await init();
+    process.exit(0);
   }
   if (result === undefined) {
     handleFailure(commandName);

@@ -11,10 +11,8 @@ const generateEntities = (number) => {
   }
   return JSON.stringify(result);
 };
-async function init() {
-  let numberOfElements = 0;
-  let path = ``;
 
+async function init() {
   await ask({
     question: `Generate data (yes/no)?\n`,
     validator: utils.isYesOrNo,
@@ -25,18 +23,14 @@ async function init() {
     }
   });
 
-  await ask({
+  const numberOfElements = await ask({
     question: `How much elements?\n`,
     validator: utils.isNonNegativeInteger,
-  }).then((value) => {
-    numberOfElements = value;
   });
 
-  await ask({
+  const path = await ask({
     question: `Specify path to file\n`,
     validator: () => true,
-  }).then((value) => {
-    path = value;
   });
 
   if (await utils.isFileExist(path)) {
@@ -53,7 +47,6 @@ async function init() {
   } else {
     await utils.writeToFile(path, generateEntities(numberOfElements));
   }
-  process.exit(0);
 }
 
 module.exports = init;

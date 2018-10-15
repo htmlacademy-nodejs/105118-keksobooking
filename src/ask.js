@@ -16,7 +16,7 @@ const ask = async ({
     rl.question(`${question}`, async (answer) => {
       answer = answer.trim();
       if (!utils.isValid(answer, validator)) {
-        ask({
+        answer = await ask({
           question,
           validator,
         });
