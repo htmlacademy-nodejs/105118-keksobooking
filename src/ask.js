@@ -11,7 +11,6 @@ const rl = readline.createInterface({
 const ask = async ({
   question,
   validator,
-  fn,
 }) =>
   new Promise((resolve) => {
     rl.question(`${question}`, async (answer) => {
@@ -20,11 +19,9 @@ const ask = async ({
         ask({
           question,
           validator,
-          fn,
         });
       }
-      fn(answer);
-      resolve();
+      resolve(answer);
     });
   });
 
