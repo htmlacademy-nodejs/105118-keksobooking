@@ -1,21 +1,17 @@
 'use strict';
 
 const modules = [
-  require(`./src/help`),
-  require(`./src/license`),
-  require(`./src/version`),
-  require(`./src/description`),
-  require(`./src/author`),
+  require(`./src/commands/help`),
+  require(`./src/commands/license`),
+  require(`./src/commands/version`),
+  require(`./src/commands/description`),
+  require(`./src/commands/author`),
 ];
-
-const {
-  name,
-  author,
-} = require(`./package`);
+const init = require(`./src/init`);
 
 const commandName = process.argv[2];
 
-const handleHelp = require(`./src/help`);
+const handleHelp = require(`./src/commands/help`);
 
 const SUCCESS_EXIT_CODE = 0;
 const FAILURE_EXIT_CODE = 1;
@@ -32,14 +28,9 @@ const handleSuccess = (module) => {
 };
 
 const handleFailure = (command) => {
-  if (command === undefined) {
-    console.log(`Привет пользователь!\nЭта программа будет запускать сервер ${name}.\nАвтор: ${author}.`);
-    process.exit(SUCCESS_EXIT_CODE);
-  } else {
-    console.error(`Неизвестная команда "${command}"`);
-    handleHelp.execute(modules);
-    process.exit(FAILURE_EXIT_CODE);
-  }
+  console.error(`Unknown command "${command}"`);
+  handleHelp.execute(modules);
+  process.exit(FAILURE_EXIT_CODE);
 };
 
 const findModule = () =>
@@ -47,8 +38,12 @@ const findModule = () =>
     `--${module.name}` === commandName,
   );
 
-const run = () => {
+const run = async () => {
   const result = findModule();
+  if (!commandName) {
+    await init();
+    process.exit(0);
+  }
   if (result === undefined) {
     handleFailure(commandName);
   } else {
