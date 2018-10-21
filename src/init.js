@@ -13,15 +13,14 @@ const generateEntities = (number) => {
 };
 
 async function init() {
-  await ask({
+  const anwser = await ask({
     question: `Generate data (yes/no)?\n`,
     validator: utils.isYesOrNo,
-  }).then((value) => {
-    if (/^no$/.test(value)) {
-      process.exit(0);
-      return;
-    }
   });
+
+  if (/^no$/.test(anwser)) {
+    return;
+  }
 
   const numberOfElements = await ask({
     question: `How much elements?\n`,
@@ -34,16 +33,15 @@ async function init() {
   });
 
   if (await utils.isFileExist(path)) {
-    await ask({
+    const answer = await ask({
       question: `File with that name exist, rewrite?\n`,
       validator: utils.isYesOrNo,
-    }).then(async (value) => {
-      if (/^no$/.test(value)) {
-        process.exit(0);
-        return;
-      }
-      await utils.writeToFile(path, generateEntities(numberOfElements));
     });
+
+    if (/^no$/.test(answer)) {
+      return;
+    }
+    await utils.writeToFile(path, generateEntities(numberOfElements));
   } else {
     await utils.writeToFile(path, generateEntities(numberOfElements));
   }
