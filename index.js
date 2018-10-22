@@ -6,6 +6,7 @@ const modules = [
   require(`./src/commands/version`),
   require(`./src/commands/description`),
   require(`./src/commands/author`),
+  require(`./src/commands/server`),
 ];
 const init = require(`./src/init`);
 
@@ -20,11 +21,15 @@ const handleSuccess = (module) => {
   switch (module.name) {
     case `help`:
       module.execute(modules);
+      process.exit(SUCCESS_EXIT_CODE);
+      break;
+    case `server`:
+      module.execute(process.argv[3]);
       break;
     default:
       module.execute();
+      process.exit(SUCCESS_EXIT_CODE);
   }
-  process.exit(SUCCESS_EXIT_CODE);
 };
 
 const handleFailure = (command) => {
