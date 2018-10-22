@@ -27,7 +27,7 @@ module.exports = {
 
     const server = http.createServer((req, res) => {
       const urlPath = parse(req.url).path;
-      const serverPath = path.join(__dirname, `../../static`, urlPath);
+      const serverPath = path.join(`./static`, urlPath);
       (async () => {
         try {
           const pathStat = await stat(serverPath);
