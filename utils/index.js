@@ -1,5 +1,12 @@
 'use strict';
 
+const util = require(`util`);
+const fs = require(`fs`);
+const YES_NO_REGEXP = /^yes$|^no$/i;
+
+const open = util.promisify(fs.open);
+const write = util.promisify(fs.writeFile);
+
 const EXTENSION_CONTENT_TYPE = {
   '.css': `text/css`,
   '.jpg': `image/jpeg`,
@@ -29,6 +36,38 @@ const utils = {
       return EXTENSION_CONTENT_TYPE[extension];
     }
     return null;
+  },
+
+  isYesOrNo: (value) =>
+    YES_NO_REGEXP.test(value),
+
+  isNonNegativeInteger: (value) =>
+    !isNaN(value)
+    && value > 0
+    && value < 100,
+
+  isValid: (
+      value,
+      fn,
+  ) => {
+    return fn(value);
+  },
+
+  isFileExist: async (path) => {
+    try {
+      await open(path, `wx`);
+    } catch (error) {
+      return true;
+    }
+    return false;
+  },
+
+  writeToFile: async (name, data) => {
+    await write(name, data, (error) => {
+      if (error) {
+        throw error;
+      }
+    });
   },
 };
 

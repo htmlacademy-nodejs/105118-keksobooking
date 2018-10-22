@@ -1,5 +1,5 @@
 'use strict';
-const {description} = require(`../package.json`);
+const {description} = require(`../../package.json`);
 
 module.exports = {
   name: `description`,

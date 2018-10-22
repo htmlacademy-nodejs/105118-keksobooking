@@ -6,7 +6,7 @@ const {extname} = require(`path`);
 const path = require(`path`);
 const fs = require(`fs`);
 const {promisify} = require(`util`);
-const {extensionToContentType} = require(`../utils`);
+const {extensionToContentType} = require(`../../utils`);
 
 module.exports = {
   name: `server`,
@@ -27,7 +27,7 @@ module.exports = {
 
     const server = http.createServer((req, res) => {
       const urlPath = parse(req.url).path;
-      const serverPath = path.join(__dirname, `../static`, urlPath);
+      const serverPath = path.join(__dirname, `../../static`, urlPath);
       (async () => {
         try {
           const pathStat = await stat(serverPath);
