@@ -27,8 +27,6 @@ const extensionToContentType = (extension) => {
 };
 
 const stat = promisify(fs.stat);
-const readDir = promisify(fs.readDir);
-const readFile = promisify(fs.readFile);
 
 describe(`Check that server start and properly answer for requests`, () => {
   it(`should return file extension name`, () => {
@@ -50,8 +48,5 @@ describe(`Check that server start and properly answer for requests`, () => {
         await stat(currentPath),
         `where is no file or directory`,
     );
-  });
-  it(`Should return file if it exist or error if not`, () => {
-
   });
 });

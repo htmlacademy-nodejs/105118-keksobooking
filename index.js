@@ -6,6 +6,7 @@ const modules = [
   require(`./src/version`),
   require(`./src/description`),
   require(`./src/author`),
+  require(`./src/server`),
 ];
 
 const {
@@ -24,11 +25,15 @@ const handleSuccess = (module) => {
   switch (module.name) {
     case `help`:
       module.execute(modules);
+      process.exit(SUCCESS_EXIT_CODE);
+      break;
+    case `server`:
+      module.execute(process.argv[3]);
       break;
     default:
       module.execute();
+      process.exit(SUCCESS_EXIT_CODE);
   }
-  process.exit(SUCCESS_EXIT_CODE);
 };
 
 const handleFailure = (command) => {
