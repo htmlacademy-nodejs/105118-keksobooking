@@ -1,52 +1,28 @@
 'use strict';
 
+const request = require(`supertest`);
 const assert = require(`assert`);
-const {extname} = require(`path`);
-const fs = require(`fs`);
-const {promisify} = require(`util`);
-const {randomChoice} = require(`../utils`);
+const express = require(`express`);
+const offersRouter = require(`../src/offers/route`);
 
-const currentPath = `./static/favicon.ico`;
+const app = express();
 
-const getFileExtension = (pathName) => extname(pathName);
+app.use(`/api/offers`, offersRouter);
 
-const EXTENSION_CONTENT_TYPE = {
-  '.css': `text/css`,
-  '.html': `text/html; charset=UTF-8`,
-  '.jpg': `image/jpeg`,
-  '.ico': `image/x-icon`,
-  '.png': `image/png`,
-  '.gif': `image/gif`,
-};
-
-const extensionToContentType = (extension) => {
-  if (EXTENSION_CONTENT_TYPE.hasOwnProperty(extension)) {
-    return EXTENSION_CONTENT_TYPE[extension];
-  }
-  return null;
-};
-
-const stat = promisify(fs.stat);
-
-describe(`Check that server start and properly answer for requests`, () => {
-  it(`should return file extension name`, () => {
-    assert(
-        Object.keys(EXTENSION_CONTENT_TYPE)
-            .includes(getFileExtension(currentPath)),
-        `wrong extension`,
+const validateQuery = (value) => {
+  return Array.from(value)
+    .filter((item) =>
+      /^\d{1,3}$/.test(item)
     );
-  });
+}
 
-  it(`Should return content-type`, () => {
-    assert(
-        extensionToContentType(randomChoice(Object.keys(EXTENSION_CONTENT_TYPE))),
-        `wrong content-type`,
-    );
-  });
-  it(`Should return stat`, async () => {
-    assert(
-        await stat(currentPath),
-        `where is no file or directory`,
-    );
+describe(`GET /api/offers`, () => {
+  it(`should return json with offres from "skip" to "skip + limit"`, async () => {
+    const res = await request(app)
+      .get(`/api/offers`)
+      .set(`Accept`, `application/json`)
+      .expect(200)
+      .expect(`Content-Type`, /json/);
+    assert(res.body.hasOwnProperty(`avatar`), `wrong length`);
   });
 });
