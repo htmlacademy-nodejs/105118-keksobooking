@@ -14,6 +14,10 @@ module.exports = {
     app.use(`/api/offers`, offersRouter);
     app.use(`/`, express.static(STATIC_ROOT));
 
+    app.use(`*`, (req, res) => {
+      res.send(`${req.originalUrl} - Page not found`);
+    });
+
     app.listen(port, () => {
       console.log(`Server start at port ${port}`);
     });
