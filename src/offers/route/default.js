@@ -1,8 +1,13 @@
 'use strict';
 
+const express = require(`express`);
+const multer = require(`multer`);
 const {asyncMiddleware} = require(`../../../utils`);
 const {generateEntity} = require(`../../generateEntity`);
 const NotFound = require(`../../errors/notFound`);
+
+const jsonParser = express.json();
+const upload = multer({storage: multer.memoryStorage()});
 
 const queryValidator = ({
   limit,
@@ -33,6 +38,21 @@ module.exports = (offersRouter) => {
       entityLength = req.query.limit;
     }
 
-    res.send(generateNumberOfEntities(entityLength));
+    res.send(await generateNumberOfEntities(entityLength));
   }));
+
+  offersRouter.post(
+      ``,
+      jsonParser,
+      upload.single(`photos`),
+      asyncMiddleware(async (req, res) => {
+        const file = req.file;
+
+        if (file) {
+          req.body.photos = {name: file.originalname};
+        }
+
+        res.send(req.body);
+      })
+  );
 };
