@@ -18,8 +18,4 @@ describe(`Check that init - initialize data properly`, () => {
     const res = await utils.isFileExist(`../file.txt`);
     assert(typeof res === `boolean`, `return value is not boolean`);
   });
-  it(`write to file`, async () => {
-    await utils.writeToFile(`name.json`, JSON.stringify({foo: `bar`}));
-    await utils.isFileExist(`name.json`);
-  });
 });

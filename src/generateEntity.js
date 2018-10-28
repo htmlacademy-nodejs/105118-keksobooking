@@ -67,7 +67,7 @@ const MAX_NUMBER_OF_GUESTS = 12;
 const WEEK_MS = 36288000000;
 const DATE_FROM = 0;
 
-const generateEntity = () => ({
+const generateEntity = (currentDate) => ({
   avatar: `https://robohash.org/${Date.now()}.png`,
 
   offer: {
@@ -110,7 +110,7 @@ const generateEntity = () => ({
     y: utils.randomRange(MIN_Y_LOCATION, MAX_Y_LOCATION),
   },
 
-  date: Date.now() - utils.randomRange(DATE_FROM, WEEK_MS),
+  date: currentDate || Date.now() - utils.randomRange(DATE_FROM, WEEK_MS),
 });
 
 module.exports = {
