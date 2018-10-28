@@ -27,4 +27,32 @@ describe(`GET /api/offers`, () => {
       .expect(`Content-Type`, /json/);
     assert(res.body.date === `3.11.1971`, `wrong data length`);
   });
+
+  it(`Should return data from request`, async () => {
+    const TITLE = `mytitle`;
+    const res = await request(app)
+      .post(`/api/offers`)
+      .field(`title`, TITLE)
+      .set(`Accept`, `applicattion/json`)
+      .set(`Content-Type`, `applicattion/json`)
+      .expect(200)
+      .expect(`Content-type`, /json/);
+    assert.deepEqual(res.body.title, TITLE);
+  });
+
+  it(`Should return data from request`, async () => {
+    const reqData = {
+      title: `form`,
+      photos: `test/photos/muffin.png`,
+    };
+    const res = await request(app)
+      .post(`/api/offers`)
+      .field(`title`, reqData.title)
+      .attach(`photos`, reqData.photos)
+      .set(`Accept`, `applicattion/json`)
+      .set(`Content-Type`, `multipart/form-data`)
+      .expect(200)
+      .expect(`Content-type`, /json/);
+    assert.deepEqual(res.body, {title: reqData.title, photos: {name: `muffin.png`}});
+  });
 });
