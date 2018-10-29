@@ -16,7 +16,10 @@ const validate = ({
 }) => {
   const errors = [];
   if (
-    !(/([а-я]){0, 140}/.test(title))
+    !(
+      title.length < 140
+      && title.length > 20
+    )
   ) {
     errors.push(`Field name "title" is required!`);
   }
@@ -35,15 +38,17 @@ const validate = ({
   }
 
   if (
-    !(isNaN(price)
-    && price > 1
-    && price < 100000)
+    !(!isNaN(price)
+    && price >= 1
+    && price <= 100000)
   ) {
     errors.push(`Field name "price" is required and must be in range(1-1000)!`);
   }
 
   if (
-    !/\w[а-я]{0, 100}/i.test(address)
+    !(
+      /^\{\{\d{1,45}\}\}, \{\{\d{1,45}\}\}$/.test(address)
+    )
   ) {
     errors.push(`Field name "address" is required and must be less then 100!`);
   }
@@ -64,9 +69,11 @@ const validate = ({
   }
 
   if (
-    !(isNaN(rooms)
-    && rooms >= 0
-    && rooms <= 1000)
+    !(
+      !isNaN(rooms)
+      && rooms >= 0
+      && rooms <= 1000
+    )
   ) {
     errors.push(`Field name "rooms" is required and shloud be more then 0 and less then 1000!`);
   }
