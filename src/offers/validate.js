@@ -13,7 +13,10 @@ const validate = ({
   rooms,
   features,
   name,
-}) => {
+}, contentType) => {
+  if (/multipart/.test(contentType)) {
+    return ``;
+  }
   const errors = [];
   if (
     !(
