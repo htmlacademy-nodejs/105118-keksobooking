@@ -43,18 +43,50 @@ describe(`GET /api/offers`, () => {
   });
 
   it(`Should return data from request`, async () => {
-    const reqData = {
-      title: `form`,
-      photos: `test/photos/muffin.png`,
-    };
+    const {offer} = await generateEntity();
+    const {
+      title,
+      address,
+      price,
+      type,
+      rooms,
+      guests,
+      checkin,
+      checkout,
+      features,
+      description,
+    } = offer;
     const res = await request(app)
       .post(`/api/offers`)
-      .field(`title`, reqData.title)
-      .attach(`photos`, reqData.photos)
+      .field(`title`, title)
+      .field(`address`, address)
+      .field(`price`, price)
+      .field(`type`, type)
+      .field(`rooms`, rooms)
+      .field(`guests`, guests)
+      .field(`checkin`, checkin)
+      .field(`checkout`, checkout)
+      .field(`features`, features)
+      .field(`description`, description)
+      .attach(`photos`, `test/photos/muffin.png`)
       .set(`Accept`, `applicattion/json`)
       .set(`Content-Type`, `multipart/form-data`)
       .expect(200)
       .expect(`Content-type`, /json/);
-    assert.deepEqual(res.body, {title: reqData.title, photos: {name: `muffin.png`}});
+    assert.deepEqual(res.body, {
+      title,
+      address,
+      price,
+      type,
+      rooms,
+      guests,
+      checkin,
+      checkout,
+      features,
+      description,
+      photos: {
+        name: `muffin.png`,
+      }
+    });
   });
 });

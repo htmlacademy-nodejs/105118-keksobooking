@@ -49,7 +49,7 @@ module.exports = (offersRouter) => {
       asyncMiddleware(async (req, res) => {
         const file = req.file;
 
-        await validate(req.body, req.headers[`content-type`]);
+        await validate(req.body);
 
         if (file) {
           req.body.photos = {name: file.originalname};
