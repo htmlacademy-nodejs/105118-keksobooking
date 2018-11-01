@@ -58,16 +58,18 @@ describe(`GET /api/offers`, () => {
     } = offer;
     const res = await request(app)
       .post(`/api/offers`)
-      .field(`title`, title)
-      .field(`address`, address)
-      .field(`price`, price)
-      .field(`type`, type)
-      .field(`rooms`, rooms)
-      .field(`guests`, guests)
-      .field(`checkin`, checkin)
-      .field(`checkout`, checkout)
-      .field(`features`, features)
-      .field(`description`, description)
+      .field({
+        title,
+        address,
+        price,
+        type,
+        rooms,
+        guests,
+        checkin,
+        checkout,
+        features,
+        description,
+      })
       .attach(`photos`, `test/photos/muffin.png`)
       .set(`Accept`, `applicattion/json`)
       .set(`Content-Type`, `multipart/form-data`)
