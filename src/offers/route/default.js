@@ -5,6 +5,7 @@ const multer = require(`multer`);
 const {asyncMiddleware} = require(`../../../utils`);
 const {generateEntity} = require(`../../generateEntity`);
 const NotFound = require(`../../errors/notFound`);
+const validate = require(`../validate`);
 
 const jsonParser = express.json();
 const upload = multer({storage: multer.memoryStorage()});
@@ -47,6 +48,8 @@ module.exports = (offersRouter) => {
       upload.single(`photos`),
       asyncMiddleware(async (req, res) => {
         const file = req.file;
+
+        await validate(req.body);
 
         if (file) {
           req.body.photos = {name: file.originalname};
