@@ -20,7 +20,6 @@ const {
   MAX_X_LOCATION,
   MIN_Y_LOCATION,
   MAX_Y_LOCATION,
-  WEEK_MS,
 } = require(`../src/generateEntity.js`);
 
 describe(`Check that generateEntity generate data properly`, () => {
@@ -40,7 +39,7 @@ describe(`Check that generateEntity generate data properly`, () => {
   } = entity.offer;
   it(`should return avatar: string`, () => {
     assert(
-        entity.avatar
+        entity.author.avatar
           .match(
               /https:\/\/robohash.org\/([a-z,A-Z,0-9]{1,100})\.png/
           ),
@@ -59,7 +58,7 @@ describe(`Check that generateEntity generate data properly`, () => {
   it(`should return address {{location.x}}, {{location.y}}`, () => {
     assert(
         address.match(
-            /^\{\{[0-9]{0,3}[.]{0,1}([0-9]{0,5})\}\},\s\{\{[0-9]{0,3}[.]{0,1}([0-9]{0,5})\}\}$/
+            /^\d{1,45}, \d{1,45}$/
         ),
         `String not match`,
     );
@@ -139,14 +138,6 @@ describe(`Check that generateEntity generate data properly`, () => {
         && currentLocation.y >= MIN_Y_LOCATION
         && currentLocation.y <= MAX_Y_LOCATION,
         `wrong object`,
-    );
-  });
-  it(`shoud return timestamp`, () => {
-    const now = Date.now();
-    assert(
-        entity.date >= now - WEEK_MS
-        && entity.date <= now,
-        `wrong date`,
     );
   });
 });

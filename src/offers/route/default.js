@@ -3,43 +3,30 @@
 const express = require(`express`);
 const multer = require(`multer`);
 const {asyncMiddleware} = require(`../../../utils`);
-const {generateEntity} = require(`../../generateEntity`);
-const NotFound = require(`../../errors/notFound`);
 const validate = require(`../validate`);
 
 const jsonParser = express.json();
 const upload = multer({storage: multer.memoryStorage()});
 
-const queryValidator = ({
-  limit,
-  skip,
-}) => {
-  if (!limit || !skip) {
-    return false;
-  }
-  if (isNaN(limit) || isNaN(skip)) {
-    throw new NotFound(`Not found: limit - "${limit}" and skip - "${skip}" should be numbers`);
-  }
-  return true;
-};
+const PAGE_DEFAULT_LIMIT = 20;
 
-const generateNumberOfEntities = (length) => {
-  const data = [];
-  for (let i = 0; i < length; i++) {
-    data.push(generateEntity());
-  }
-  return data;
+const toPage = async (cursor, skip = 0, limit = PAGE_DEFAULT_LIMIT) => {
+  const packet = await cursor.skip(skip).limit(limit).toArray();
+  return {
+    data: packet,
+    skip,
+    limit,
+    total: await cursor.count(),
+  };
 };
 
 module.exports = (offersRouter) => {
   offersRouter.get(``, asyncMiddleware(async (req, res) => {
-    let entityLength = 20;
-
-    if (queryValidator(req.query)) {
-      entityLength = req.query.limit;
-    }
-
-    res.send(await generateNumberOfEntities(entityLength));
+    res.send(await toPage(
+        await offersRouter.offersStore.getOffers(),
+        req.query.from,
+        req.query.to,
+    ));
   }));
 
   offersRouter.post(
@@ -51,11 +38,14 @@ module.exports = (offersRouter) => {
 
         await validate(req.body);
 
+        await offersRouter.offersStore.createOffer(req.body);
+
         if (file) {
           req.body.photos = {name: file.originalname};
         }
 
         res.send(req.body);
-      })
+      }
+      )
   );
 };

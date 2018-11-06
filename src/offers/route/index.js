@@ -12,4 +12,7 @@ defaultRoute(offersRouter);
 dateRoute(offersRouter);
 errorRoute(offersRouter);
 
-module.exports = offersRouter;
+module.exports = (offersStore) => {
+  offersRouter.offersStore = offersStore;
+  return offersRouter;
+};

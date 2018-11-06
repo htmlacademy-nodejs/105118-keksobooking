@@ -53,7 +53,7 @@ const MIN_Y_LOCATION = 150;
 const MAX_Y_LOCATION = 500;
 
 const OFFER_COORDINATE_FROM = 0;
-const OFFER_COORDINATE_TO = 360;
+const OFFER_COORDINATE_TO = 100;
 
 const MIN_PRICE = 1000;
 const MAX_PRICE = 100000;
@@ -68,27 +68,30 @@ const WEEK_MS = 36288000000;
 const DATE_FROM = 0;
 
 const generateEntity = (currentDate) => ({
-  avatar: `https://robohash.org/${Date.now()}.png`,
+  author: {
+    avatar: `https://robohash.org/${Date.now()}.png`,
+    name: `name`,
+  },
 
   offer: {
     title: utils.randomChoice(titlesList),
 
     address:
-      `{{${utils.randomRange(
+      `${utils.randomRange(
           OFFER_COORDINATE_FROM,
           OFFER_COORDINATE_TO,
-      )}}}, {{${utils.randomRange(
+      )}, ${utils.randomRange(
           OFFER_COORDINATE_FROM,
           OFFER_COORDINATE_TO,
-      )}}}`,
+      )}`,
 
-    price: utils.randomRange(MIN_PRICE, MAX_PRICE),
+    price: utils.randomRange(MIN_PRICE, MAX_PRICE).toString(),
 
     type: utils.randomChoice(typesList),
 
-    rooms: utils.randomRange(MIN_NUMBER_OF_ROOMS, MAX_NUMBER_OF_ROOMS),
+    rooms: utils.randomRange(MIN_NUMBER_OF_ROOMS, MAX_NUMBER_OF_ROOMS).toString(),
 
-    guests: utils.randomRange(MIN_NUMBER_OF_GUESTS, MAX_NUMBER_OF_GUESTS),
+    guests: utils.randomRange(MIN_NUMBER_OF_GUESTS, MAX_NUMBER_OF_GUESTS).toString(),
 
     checkin: utils.randomChoice(checkinsList),
 

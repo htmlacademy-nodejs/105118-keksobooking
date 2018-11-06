@@ -11,7 +11,7 @@ const validate = ({
   checkin,
   checkout,
   rooms,
-  features,
+  features = [],
   name,
 }) => {
   const errors = [];
@@ -47,7 +47,7 @@ const validate = ({
 
   if (
     !(
-      /^\{\{\d{1,45}\}\}, \{\{\d{1,45}\}\}$/.test(address)
+      /^\d{1,45}, \d{1,45}$/.test(address)
     )
   ) {
     errors.push(`Field name "address" is required and must be less then 100!`);
@@ -69,11 +69,9 @@ const validate = ({
   }
 
   if (
-    !(
-      !isNaN(rooms)
-      && rooms >= 0
-      && rooms <= 1000
-    )
+    !/[0-9]/.test(rooms)
+    || rooms < 0
+    || rooms > 1000
   ) {
     errors.push(`Field name "rooms" is required and shloud be more then 0 and less then 1000!`);
   }
@@ -88,8 +86,7 @@ const validate = ({
   ];
   if (
     !(
-      !features
-      || features.filter((item) =>
+      features.filter((item) =>
         FEATURES.includes(item),
       )
       || utils.getUniqArray(features).length === features.length)
