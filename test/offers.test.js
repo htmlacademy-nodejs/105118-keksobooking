@@ -4,46 +4,38 @@ const request = require(`supertest`);
 const bodyParser = require(`body-parser`);
 const assert = require(`assert`);
 const express = require(`express`);
-const offersRouter = require(`../src/offers/route`);
 const {generateEntity} = require(`../src/generateEntity`);
+
+const offersStoreMock = require(`./mock/offers-store-mock`);
+const offersRouter = require(`../src/offers/route`)(offersStoreMock);
 
 const app = express();
 app.use(bodyParser.json());
 app.use(`/api/offers`, offersRouter);
 
+
 describe(`GET /api/offers`, () => {
+  it(`should return entity with date`, async () => {
+    const DATE = `3.11.1971`;
+    const res = await request(app)
+      .get(`/api/offers/${DATE}`)
+      .set(`Accept`, `application/json`)
+      .expect(200)
+      .expect(`Content-Type`, /json/);
+    assert(res.body.filter((item) => item.date === DATE).length > 0, `wrong elements with data`);
+  });
+
   it(`should return json with offres`, async () => {
     const res = await request(app)
       .get(`/api/offers`)
       .set(`Accept`, `application/json`)
       .expect(200)
       .expect(`Content-Type`, /json/);
-    assert(res.body.length === 20, `wrong length`);
-  });
-
-  it(`should return entity with date`, async () => {
-    const res = await request(app)
-      .get(`/api/offers/3.11.1971`)
-      .set(`Accept`, `application/json`)
-      .expect(200)
-      .expect(`Content-Type`, /json/);
-    assert(res.body.date === `3.11.1971`, `wrong data length`);
+    assert(res.body.data.length === 20, `should return 20 elements`);
   });
 
   it(`Should return data from request`, async () => {
-    const {offer} = await generateEntity();
-    const result = await request(app)
-      .post(`/api/offers`)
-      .send(offer)
-      .set(`Accept`, `application/json`)
-      .set(`Content-Type`, `application/json`)
-      .expect(200)
-      .expect(`Content-type`, /json/);
-    assert.deepEqual(result.body, offer);
-  });
-
-  it(`Should return data from request`, async () => {
-    const {offer} = await generateEntity();
+    const {offer, author} = await generateEntity();
     const {
       title,
       address,
@@ -53,8 +45,8 @@ describe(`GET /api/offers`, () => {
       guests,
       checkin,
       checkout,
-      features,
       description,
+      features,
     } = offer;
     const res = await request(app)
       .post(`/api/offers`)
@@ -69,13 +61,30 @@ describe(`GET /api/offers`, () => {
         checkout,
         features,
         description,
+        name: author.name,
       })
       .attach(`photos`, `test/photos/muffin.png`)
       .set(`Accept`, `applicattion/json`)
       .set(`Content-Type`, `multipart/form-data`)
       .expect(200)
       .expect(`Content-type`, /json/);
-    assert.deepEqual(res.body, {
+
+    const result = {
+      title: res.body.title,
+      address: res.body.address,
+      price: res.body.price,
+      type: res.body.type,
+      rooms: res.body.rooms,
+      guests: res.body.guests,
+      checkin: res.body.checkin,
+      checkout: res.body.checkout,
+      features: res.body.features,
+      description: res.body.description,
+      photos: res.body.photos,
+      name: res.body.name,
+    };
+
+    assert.deepEqual(result, {
       title,
       address,
       price,
@@ -88,7 +97,9 @@ describe(`GET /api/offers`, () => {
       description,
       photos: {
         name: `muffin.png`,
-      }
+      },
+      name: author.name,
     });
   });
+
 });

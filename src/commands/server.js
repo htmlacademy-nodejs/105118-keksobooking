@@ -1,7 +1,8 @@
 'use strict';
 
 const express = require(`express`);
-const offersRouter = require(`../offers/route`);
+const offersStore = require(`../offers/store`);
+const offersRouter = require(`../offers/route`)(offersStore);
 
 module.exports = {
   name: `server`,
